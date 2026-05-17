@@ -4,34 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>나는 어떤 교사가 될까? | 예비교사 교실 시뮬레이션 및 관리자 관제</title>
-    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Noto Sans KR & Inter 폰트 라이브러리 로드 -->
+    <!-- Inter & Noto Sans KR 폰트 불러오기 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
     <style>
         body {
             font-family: 'Noto Sans KR', 'Inter', sans-serif;
             background: linear-gradient(135deg, #fdf6f0 0%, #f3fbf7 50%, #f0f7ff 100%);
             min-height: 100vh;
             overflow-x: hidden;
-            -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
         }
         
-        /* 대표 애니메이션: 부드러운 둥실거림 */
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(1deg); }
+            50% { transform: translateY(-6px) rotate(1.5deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
         
-        /* 페이드인 진입 효과 */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(16px);
             }
             to {
                 opacity: 1;
@@ -44,84 +38,92 @@
         }
 
         .animate-fade-in {
-            animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        /* PC 환경에서만 호버 입체 효과 적용 (모바일 터치 찌꺼기 방지) */
+        /* 모바일 대응 미디어쿼리 최적화 */
         @media (hover: hover) {
             .choice-card:hover {
-                transform: translateY(-2px);
-                border-color: rgba(244, 63, 94, 0.3);
-                box-shadow: 0 8px 16px -6px rgba(244, 63, 94, 0.1);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 18px -6px rgba(244, 63, 94, 0.12);
             }
         }
 
-        /* 스마트폰 화면 폭 최적화 (가로 스크롤 완전 방지) */
         @media (max-width: 768px) {
-            /* 인풋 클릭 시 강제 확대 현상 해소 */
+            /* iOS Input 포커스 시 자동 확대 방지 기능 */
             input[type="text"], input[type="password"], textarea {
                 font-size: 16px !important;
             }
 
+            /* 전체 본문 여백 축소로 모바일 가시성 극대화 */
             main {
-                padding-top: 0.75rem !important;
+                padding-top: 1rem !important;
                 padding-bottom: 2rem !important;
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
             }
 
+            /* 카드 패딩 및 둥근 모서리 미세 조율 */
             .responsive-card {
-                padding: 1.25rem 1rem !important;
-                border-radius: 1.25rem !important;
+                padding: 1.5rem 1rem !important;
+                border-radius: 1.5rem !important;
             }
 
+            /* 모바일 전용 폰트 스케일링 */
             .text-title-responsive {
-                font-size: 1.6rem !important;
-                line-height: 1.3 !important;
+                font-size: 1.75rem !important; /* 28px */
+                line-height: 1.25 !important;
             }
 
             .text-subtitle-responsive {
-                font-size: 0.9rem !important;
+                font-size: 0.95rem !important;
                 line-height: 1.4 !important;
             }
 
-            /* 엄지손가락 터치 표준 규격화 (최소 48px 만족) */
+            /* 손가락 터치 영역 최소 48px 확보용 버튼 스타일 */
             .btn-responsive {
                 width: 100% !important;
                 min-height: 48px !important;
-                padding: 0.75rem 1rem !important;
-                font-size: 0.95rem !important;
+                padding-top: 0.875rem !important;
+                padding-bottom: 0.875rem !important;
+                font-size: 1rem !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
             }
 
             .choice-card {
-                padding: 0.9rem 1rem !important;
-                min-height: 50px !important;
+                padding: 1rem !important;
+                min-height: 52px !important;
+            }
+
+            /* 모바일 줌 세로 배치 대응 */
+            .action-container-responsive {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
             }
         }
     </style>
 </head>
 <body class="flex flex-col justify-between text-slate-800 antialiased overflow-x-hidden">
 
-    <!-- 상단 멘토링 감성 헤더 -->
+    <!-- 상단 헤더 -->
     <header class="w-full py-3 px-4 bg-white/75 backdrop-blur-md border-b border-rose-100/50 sticky top-0 z-40 transition-all shadow-sm">
         <div class="max-w-4xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-1.5">
                 <span class="text-lg">🌸</span>
-                <span class="text-xs md:text-sm font-bold tracking-wider text-rose-600/80">예비교사 멘토링</span>
+                <span class="text-xs md:text-sm font-bold tracking-wider text-rose-600/80">나는 어떤 교사가 될까?</span>
             </div>
             <div class="flex items-center space-x-1.5">
                 <div id="header-user" class="hidden text-[10px] md:text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full font-medium border border-rose-100/60">
                     <span id="user-display-name">예비교사</span>님
                 </div>
                 <!-- 관리자 전환 비밀 모드 단추 -->
-                <button onclick="openAdminModal()" class="text-[10px] md:text-xs bg-slate-800 hover:bg-slate-900 text-white px-2.5 py-1.5 rounded-full font-semibold transition-all shadow-md flex items-center space-x-1">
+                <button onclick="openAdminModal()" class="text-[10px] md:text-xs bg-slate-800 hover:bg-slate-900 text-white px-2.5 py-1 rounded-full font-semibold transition-all shadow-md flex items-center space-x-1">
                     <span>🔑</span>
                     <span>관리자</span>
                 </button>
@@ -132,7 +134,7 @@
     <!-- 메인 컨텐츠 컨테이너 -->
     <main class="flex-grow w-full max-w-2xl mx-auto px-4 py-6 flex flex-col justify-center items-center">
 
-        <!-- [1] 시작 화면 (Welcome Screen) -->
+        <!-- [1] 시작 화면 -->
         <section id="screen-start" class="w-full bg-white/85 backdrop-blur-lg rounded-3xl p-6 md:p-10 shadow-xl shadow-rose-100/30 border border-white flex flex-col items-center text-center animate-fade-in responsive-card">
             <!-- 감성 일러스트 아이콘 -->
             <div class="w-16 h-16 md:w-20 md:h-20 bg-rose-50 rounded-full flex items-center justify-center mb-4 md:mb-6 animate-float">
@@ -159,7 +161,7 @@
             <div class="w-full mb-6 text-left">
                 <label for="username" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">선생님의 이름(또는 닉네임)을 입력해 주세요</label>
                 <div class="relative">
-                    <input type="text" id="username" placeholder="예: 김선아 예비교사" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 focus:border-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all text-base font-medium placeholder-slate-400">
+                    <input type="text" id="username" placeholder="예: 김선아" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 focus:border-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-100 transition-all text-base font-medium placeholder-slate-400">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xl">✍️</span>
                 </div>
                 <p id="username-error" class="hidden mt-2 text-xs md:text-sm text-rose-500 font-medium">⚠️ 원활한 구분을 위해 이름을 입력해 주세요.</p>
@@ -172,7 +174,7 @@
         </section>
 
 
-        <!-- [2] 교실 상황 시뮬레이션 화면 (Simulation Screen) -->
+        <!-- [2] 교실 상황 시뮬레이션 화면 -->
         <section id="screen-quiz" class="hidden w-full bg-white/85 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-rose-100/30 border border-white animate-fade-in responsive-card">
             <!-- 진행도 탑 바 -->
             <div class="mb-5">
@@ -203,7 +205,7 @@
         </section>
 
 
-        <!-- [3] 분석 로딩 화면 (Loading Screen) -->
+        <!-- [3] 분석 로딩 화면 -->
         <section id="screen-loading" class="hidden w-full bg-white/85 backdrop-blur-lg rounded-3xl p-8 shadow-xl shadow-rose-100/30 border border-white flex flex-col items-center justify-center text-center animate-fade-in min-h-[350px] responsive-card">
             <div class="relative w-20 h-20 mb-6">
                 <!-- 회전하는 파스텔 로더 -->
@@ -218,7 +220,7 @@
         </section>
 
 
-        <!-- [4] 결과 분석 화면 (Results Screen) -->
+        <!-- [4] 결과 분석 화면 -->
         <section id="screen-result" class="hidden w-full space-y-6 animate-fade-in">
             
             <!-- (A) 상단 요약 카드 -->
@@ -255,55 +257,7 @@
                 </div>
             </div>
 
-            <!-- (B) AI 멘토 연동 및 1:1 심층 성찰 보고서 집필 카드 -->
-            <div class="bg-gradient-to-br from-indigo-50/80 via-white to-purple-50/80 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-indigo-100/40 border border-indigo-100/50 space-y-5 responsive-card">
-                <div class="flex items-center justify-between border-b border-indigo-100/60 pb-3">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xl">🤖</span>
-                        <h3 class="text-base md:text-lg font-black text-slate-900">AI 수석교사의 맞춤형 심층 피드백</h3>
-                    </div>
-                    <span class="text-[9px] font-extrabold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full tracking-wider">Gemini AI 3.1</span>
-                </div>
-
-                <!-- API Key 입력 영역 -->
-                <div class="bg-indigo-50/50 p-3.5 rounded-2xl border border-indigo-100/60 space-y-2">
-                    <label for="gemini-key-input" class="block text-[11px] font-bold text-indigo-700 tracking-wider uppercase">✨ 개인 Gemini API Key 입력 (선택사항)</label>
-                    <div class="relative">
-                        <input type="password" id="gemini-key-input" placeholder="AI 피드백과 대화를 활성화하려면 API 키를 입력하세요..." class="w-full px-3 py-2.5 rounded-xl border border-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-300 text-xs">
-                    </div>
-                    <p class="text-[10px] text-indigo-500 leading-normal">
-                        * API Key는 귀하의 브라우저 로컬 저장소에만 보관되며, 서버로 유출되지 않습니다. <br>
-                        (무료 키 발급처: Google AI Studio)
-                    </p>
-                </div>
-
-                <!-- AI 성찰 리포트 출력 구역 -->
-                <div id="ai-report-container" class="space-y-4">
-                    <p class="text-xs text-slate-500 leading-relaxed">
-                        선생님이 선택하신 15가지 교실 상황 판단 빅데이터와 4대 DNA 지분율 비율을 AI 수석교사 멘토가 다차원적으로 검토하여, 앞으로 교사 생활에서 마주할 구체적 극복방안 및 성찰 가이드를 고품격 리포트로 발행해 드립니다.
-                    </p>
-                    <button onclick="generateAIReport()" id="btn-generate-ai" class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transform active:scale-95 transition-all text-sm flex items-center justify-center space-x-2 btn-responsive">
-                        <span>✨ AI 수석교사 성찰 보고서 집필하기</span>
-                    </button>
-                </div>
-
-                <!-- AI 로딩 상태 인디케이터 (스켈레톤 UI) -->
-                <div id="ai-report-loader" class="hidden space-y-3 animate-pulse">
-                    <div class="h-4 bg-slate-200 rounded w-1/4"></div>
-                    <div class="h-3.5 bg-slate-200 rounded w-full"></div>
-                    <div class="h-3.5 bg-slate-200 rounded w-5/6"></div>
-                    <div class="h-3.5 bg-slate-200 rounded w-full"></div>
-                    <div class="h-3.5 bg-slate-200 rounded w-4/5"></div>
-                    <p class="text-[10px] text-center text-indigo-400 font-bold mt-2">📖 AI 수석교사가 선생님만을 위한 심층 멘토링 서안을 세심히 분석 및 작성하고 있습니다 (약 5~10초 소요)...</p>
-                </div>
-
-                <!-- AI 보고서 실제 출력문 -->
-                <div id="ai-report-output" class="hidden bg-white/80 p-5 rounded-2xl border border-indigo-100/40 text-xs md:text-sm text-slate-700 leading-relaxed font-normal whitespace-pre-line prose max-w-none">
-                    <!-- AI 피드백 텍스트 기입 -->
-                </div>
-            </div>
-
-            <!-- (C) 세부 심층 분석 카드 -->
+            <!-- (B) 세부 심층 분석 카드 -->
             <div class="bg-white/95 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-rose-100/30 border border-white space-y-5 responsive-card">
                 <h3 class="text-lg font-bold text-slate-800 border-b border-rose-100 pb-2.5 flex items-center space-x-2">
                     <span>💡 교직 성향 상세 분석</span>
@@ -360,36 +314,68 @@
                 </div>
             </div>
 
-            <!-- (D) AI 수석교사 멘토와 실시간 1:1 대화 챗봇 인터페이스 -->
+            <!-- (C) AI 수석교사 1:1 현장 고민 상담소 -->
             <div class="bg-white/95 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-rose-100/30 border border-white space-y-4 responsive-card">
                 <div class="border-b border-rose-100 pb-3">
-                    <h3 class="text-base md:text-lg font-bold text-slate-800 flex items-center space-x-2">
-                        <span>💬 AI 수석교사와 1:1 톡 (성찰 멘토링)</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">선생님의 분석된 결과 성향을 바탕으로 교실 현장의 생생한 해결책을 질문해 보세요.</p>
-                </div>
-
-                <!-- 챗봇 메시지 기록 창 -->
-                <div id="ai-chat-box" class="w-full h-64 overflow-y-auto bg-slate-50 border border-slate-200/80 rounded-2xl p-4 space-y-3 flex flex-col text-xs md:text-sm scroll-smooth">
-                    <!-- 환영사 안내 -->
-                    <div class="self-start bg-slate-200 text-slate-800 max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tl-none font-medium leading-relaxed">
-                        안녕하세요! 예비교사 선생님. 저는 예비교사 멘토링을 수임한 AI 수석교사입니다. 교실 갈등이나 수업 관리, 학부모 상담 등 어떤 주제든 편히 물어보세요. 선생님의 교직 DNA에 딱 맞는 따뜻하고 영양가 있는 현장 지침을 안내할게요! 👩‍🏫✨
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base md:text-lg font-bold text-slate-800 flex items-center space-x-2">
+                            <span>👩‍🏫</span>
+                            <span>AI 수석교사 1:1 현장 고민 상담소</span>
+                        </h3>
+                        <span class="text-[10px] bg-rose-50 text-rose-500 font-bold px-2.5 py-0.5 rounded-full border border-rose-100" id="ai-mode-status">자율 멘토 모드</span>
                     </div>
+                    <p class="text-xs text-slate-400 mt-1">선생님의 고유 진단 유형과 고민 키워드를 분석해 든든한 선배 수석교사가 맞춤식 해결책을 제시해 줍니다.</p>
                 </div>
 
-                <!-- 채팅 입력 영역 -->
-                <div class="flex items-center space-x-2">
-                    <input type="text" id="ai-chat-input" placeholder="AI 수석교사에게 교실 고민 질문하기..." onkeydown="if(event.key==='Enter') sendChatMessage()" class="flex-grow px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-rose-300 focus:ring-2 focus:ring-rose-100 transition-all text-xs md:text-sm placeholder-slate-400">
-                    <button onclick="sendChatMessage()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-4 py-3.5 rounded-xl shadow-md transition-all">전송</button>
+                <!-- API Key 입력 영역 -->
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200/60 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-600">🗝️ Gemini API 키 등록 (자유로운 오픈 대화용)</span>
+                        <a href="https://aistudio.google.com/" target="_blank" class="text-[10px] text-rose-500 font-bold hover:underline">무료 키 발급받기 →</a>
+                    </div>
+                    <div class="flex space-x-2">
+                        <input type="password" id="gemini-key-input" onchange="toggleAiModeStatus()" placeholder="API 키를 등록하면 완전 자유 대화가 잠금해제됩니다." class="flex-grow text-xs px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-200">
+                        <button onclick="saveApiKey()" class="bg-slate-800 hover:bg-slate-950 text-white font-bold text-xs px-3.5 rounded-lg transition-all">등록</button>
+                    </div>
+                    <p class="text-[9px] text-slate-400">※ 등록하지 않아도 수석교사 시나리오 가이드 상담이 실시간 지원됩니다.</p>
+                </div>
+
+                <!-- 실시간 채팅 공간 -->
+                <div class="flex flex-col space-y-3">
+                    <div id="ai-chat-box" class="w-full h-56 bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 overflow-y-auto text-xs space-y-2.5">
+                        <div class="flex items-start space-x-2">
+                            <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                            <div class="bg-rose-50 text-slate-700 p-2.5 rounded-xl max-w-[85%] leading-relaxed font-medium">
+                                반갑습니다! 오늘 결과를 바탕으로 궁금하거나 막막한 점이 있다면 언제든 물어보세요. (예: "학부모 항의 대응법", "수업 기강 잡기", "무기력한 학생 관리" 등) 🌸
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 채팅 추천 키워드 태그 -->
+                    <div class="flex flex-wrap gap-1.5 pb-1">
+                        <button onclick="clickRecommendTag('수업 기강 잡는 법')" class="text-[10px] bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 px-2 py-1 rounded-lg border border-slate-200 transition-all font-medium">⚡ 기강 잡기</button>
+                        <button onclick="clickRecommendTag('학부모 항의 대처법')" class="text-[10px] bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 px-2 py-1 rounded-lg border border-slate-200 transition-all font-medium">📞 학부모 소통</button>
+                        <button onclick="clickRecommendTag('겉돌고 소외되는 친구 지도')" class="text-[10px] bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 px-2 py-1 rounded-lg border border-slate-200 transition-all font-medium">🤝 소외된 친구</button>
+                        <button onclick="clickRecommendTag('첫날 첫수업 오리엔테이션 팁')" class="text-[10px] bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 px-2 py-1 rounded-lg border border-slate-200 transition-all font-medium">🏫 첫날 오티</button>
+                        <button onclick="clickRecommendTag('공부를 포기하고 엎드리는 무기력 학생')" class="text-[10px] bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-500 px-2 py-1 rounded-lg border border-slate-200 transition-all font-medium">🌱 무기력 극복</button>
+                    </div>
+
+                    <!-- 채팅 메시지 입력 창 -->
+                    <div class="flex space-x-2">
+                        <input type="text" id="ai-chat-input" onkeypress="handleChatEnter(event)" placeholder="AI 선배 교사에게 고민이나 질문을 건네보세요..." class="flex-grow text-xs px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-200">
+                        <button onclick="sendChatMessage()" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-4 rounded-xl shadow-md transition-all flex items-center space-x-1">
+                            <span>전송</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- (E) 줌 채팅 공유용 템플릿 카드 -->
+            <!-- (D) 줌 채팅 공유용 템플릿 카드 -->
             <div class="bg-white/95 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-rose-100/30 border border-white space-y-4 responsive-card">
                 <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-rose-50 pb-3 gap-3">
                     <div>
                         <h3 class="text-base md:text-lg font-bold text-slate-800 flex items-center space-x-2">
-                            <span>💬 줌 멘토링 공유용 요약</span>
+                            <span>💬 줌 채팅 공유용 요약</span>
                         </h3>
                         <p class="text-xs text-slate-400 mt-0.5">요약을 복사해 줌(Zoom) 채팅창에 간편하게 동료들과 성찰을 나눠보세요!</p>
                     </div>
@@ -405,7 +391,7 @@
                 </div>
             </div>
 
-            <!-- (F) 소그룹 대화 및 생각 노트 -->
+            <!-- (E) 소그룹 대화 및 생각 노트 -->
             <div class="bg-white/95 backdrop-blur-lg rounded-3xl p-5 md:p-8 shadow-xl shadow-rose-100/30 border border-white space-y-5 responsive-card">
                 <div class="border-b border-rose-100 pb-2.5">
                     <h3 class="text-base md:text-lg font-bold text-slate-800 flex items-center space-x-2">
@@ -454,7 +440,7 @@
         </section>
 
 
-        <!-- [5] 관리자 대시보드 화면 (Admin Control Dashboard) -->
+        <!-- [5] 관리자 대시보드 화면 -->
         <section id="screen-admin" class="hidden w-full space-y-4 animate-fade-in">
             <!-- 어드민 헤더 -->
             <div class="bg-slate-900 text-white rounded-3xl p-5 md:p-6 shadow-xl relative overflow-hidden">
@@ -639,7 +625,7 @@
         <span id="toast-message" class="font-medium">안내 메시지입니다.</span>
     </div>
 
-    <!-- 줌 멘토 교육 격려용 푸터 -->
+    <!-- 푸터 -->
     <footer class="w-full py-4 px-3 bg-slate-50 border-t border-slate-200/60 mt-8 text-center text-[10px] text-slate-400">
         <div class="max-w-md mx-auto space-y-0.5">
             <p class="font-bold text-slate-500">예비교사 성장을 위한 줌 라이브 대화 웹앱 🌸</p>
@@ -648,7 +634,7 @@
     </footer>
 
 
-    <!-- [중요] 100% 자립적 오프라인 구동 지원 핵심 스크립트 -->
+    <!-- [중요] 100% 자립적 오프라인 구동 및 하이브리드 상담 기능 제어용 스크립트 -->
     <script>
         // 전역 상태 변수들
         let userName = "예비교사";
@@ -656,9 +642,6 @@
         let selectedAnswers = [];
         let currentLoadedMentees = [];
         let menteeIdToDelete = null;
-
-        // Gemini API 대화 맥락 기록을 위한 메모리 보관함
-        let chatContextHistory = [];
 
         // 로컬 브라우저 전용 데이터베이스 키
         const LOCAL_DB_KEY = "who_is_teacher_saved_results";
@@ -671,7 +654,6 @@
             },
             saveMentee: (mentee) => {
                 const mentees = localDB.getMentees();
-                // 동일 세션 아이디가 없으면 새로 할당
                 mentee.id = mentee.id || "user_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5);
                 mentee.updatedAt = new Date().toISOString();
                 mentees.push(mentee);
@@ -688,7 +670,7 @@
             }
         };
 
-        // 15개 교실 상황 데이터 (정밀 보존)
+        // 15개 교실 상황 데이터
         const scenarios = [
             {
                 id: 1,
@@ -917,189 +899,6 @@
         };
 
 
-        // Gemini API 호출 엔진
-        async function callGeminiAPI(payload, customKey, maxRetries = 2) {
-            const apiKey = customKey || ""; // 사용자 커스텀 Key 우선, 없으면 환경 가입용 비어있는 키
-            if (!apiKey) {
-                throw new Error("API 키가 제공되지 않았습니다. API Key 입력란을 채워주세요!");
-            }
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            let delay = 1000;
-
-            for (let i = 0; i <= maxRetries; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (response.ok) {
-                        return await response.json();
-                    }
-
-                    if (response.status === 429) {
-                        console.debug(`[제한] ${delay}ms 후 재시도...`);
-                    } else if (response.status === 400) {
-                        throw new Error("API 요청 규격이 맞지 않거나 올바르지 않은 키입니다.");
-                    } else {
-                        throw new Error(`API 응답 오류 코드: ${response.status}`);
-                    }
-                } catch (err) {
-                    if (i === maxRetries) throw err;
-                }
-                await new Promise(resolve => setTimeout(resolve, delay));
-                delay *= 2;
-            }
-        }
-
-        // AI 수석교사의 맞춤형 성찰 보고서 집필
-        async function generateAIReport() {
-            const container = document.getElementById("ai-report-container");
-            const loader = document.getElementById("ai-report-loader");
-            const output = document.getElementById("ai-report-output");
-            const userKey = document.getElementById("gemini-key-input").value.trim();
-
-            if (!userKey) {
-                showToast("🔑 Key 누락", "AI 보고서를 집필하려면 세부 피드백 카드 상단의 API Key를 먼저 넣어주세요!");
-                return;
-            }
-
-            // UI 상태 전환
-            container.classList.add("hidden");
-            loader.classList.remove("hidden");
-            output.classList.add("hidden");
-
-            // 예비교사 상태 지분 계산
-            const total = selectedAnswers.length || 15;
-            const counts = { "관계중심형": 0, "원칙균형형": 0, "성장지원형": 0, "탐구촉진형": 0 };
-            selectedAnswers.forEach(ans => { if(counts[ans] !== undefined) counts[ans]++; });
-
-            const percentStr = Object.entries(counts)
-                .map(([type, cnt]) => `${type}: ${Math.round((cnt/total)*100)}%`)
-                .join(", ");
-
-            const dominantType = Object.entries(counts).reduce((a, b) => b[1] > a[1] ? b : a)[0];
-
-            // AI 프롬프트 빌드
-            const systemPrompt = "당신은 전국 초중등 교육현장의 베테랑이자 다정다감하고 엄격하며 지혜로운 수석교사 멘토입니다. 예비교사 멘티가 진행한 교실 의사결정 결과를 면밀히 심층 진단하고, 격려와 함께 보완점을 알려주는 장문의 입체적인 교육성찰 피드백 서한을 작성해야 합니다.";
-            const userPrompt = `
-이름: ${userName} 예비교사님
-대표 교직 DNA: [${dominantType}]
-선택된 가치 비율 분포: [${percentStr}]
-
-위의 분석 지표를 기반으로, ${userName} 예비교사에게 편지글 형태로 다음 지침들을 담아 세심하게 대화하듯이 3-4개 문단 분량의 격려문을 작성해주세요:
-1. 대표 유형의 소중한 가치와 강점에 대해 큰 박수와 지지를 담아 설명해 주세요.
-2. 예비교사로서 특히 지분율이 낮은 다른 교육적 가치(예: 원칙균형이 낮다면 질서 설계, 관계중심이 낮다면 마음 소통 등)를 왜 교실에서 보완해서 융합시켜야 하는지 구체적인 팁을 들어 설명해 주세요.
-3. 실제 초임 교사 때 겪기 쉬운 갈등 상황(학부모 대처, 무기력한 아동) 한 가지를 이 예비교사가 자신의 DNA를 활용하여 어떻게 극복할 수 있을지 아주 실천적이고 현실적인 해결 시나리오를 주입해 주세요.
-
-어조: 존칭을 사용하며 온화하고 희망을 심어주는 친절한 어조. 마크다운 기호를 쓰지 않고 자연스러운 줄바꿈으로 편지처럼 작성해 주세요.`;
-
-            const payload = {
-                contents: [{ parts: [{ text: userPrompt }] }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
-            };
-
-            try {
-                const data = await callGeminiAPI(payload, userKey);
-                const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (candidateText) {
-                    output.textContent = candidateText.trim();
-                    loader.classList.add("hidden");
-                    output.classList.remove("hidden");
-                } else {
-                    throw new Error("결과 텍스트 유실");
-                }
-            } catch (err) {
-                console.error("AI 리포트 생성 에러:", err);
-                loader.classList.add("hidden");
-                container.classList.remove("hidden");
-                showToast("⚠️ API 에러", "올바른 API Key인지 확인해주시고, 네트워크 연결을 확인해주세요.");
-            }
-        }
-
-        // AI 수석교사 1:1 채팅 처리
-        async function sendChatMessage() {
-            const inputEl = document.getElementById("ai-chat-input");
-            const chatBox = document.getElementById("ai-chat-box");
-            const query = inputEl.value.trim();
-            const userKey = document.getElementById("gemini-key-input").value.trim();
-
-            if (!query) return;
-
-            if (!userKey) {
-                showToast("🔑 Key 누락", "대화를 시작하려면 먼저 API Key 입력창에 사용 키를 기입해 주세요!");
-                return;
-            }
-
-            // 1. 사용자 채팅 버블 화면 렌더링
-            const userBubble = document.createElement("div");
-            userBubble.className = "self-end bg-rose-500 text-white max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tr-none font-medium leading-relaxed shadow-sm animate-fade-in";
-            userBubble.textContent = query;
-            chatBox.appendChild(userBubble);
-            
-            inputEl.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // 2. AI 임시 답변 대기 버블 노출
-            const aiLoadingBubble = document.createElement("div");
-            aiLoadingBubble.className = "self-start bg-slate-200 text-slate-500 max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tl-none font-medium leading-relaxed animate-pulse";
-            aiLoadingBubble.textContent = "AI 멘토가 생각하고 있습니다...";
-            chatBox.appendChild(aiLoadingBubble);
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // 예비교사 분석 지표 수합
-            const total = selectedAnswers.length || 15;
-            const counts = { "관계중심형": 0, "원칙균형형": 0, "성장지원형": 0, "탐구촉진형": 0 };
-            selectedAnswers.forEach(ans => { if(counts[ans] !== undefined) counts[ans]++; });
-            const dominantType = Object.entries(counts).reduce((a, b) => b[1] > a[1] ? b : a)[0];
-
-            // 대화 이력 누적
-            chatContextHistory.push({ role: "user", parts: [{ text: query }] });
-
-            const systemPrompt = `당신은 ${userName} 예비교사의 1:1 상담을 수임한 교육대학교 멘토 교사(수석교사)입니다. 
-멘티의 대표 성향은 [${dominantType}] 교사 유형입니다. 
-이 멘티가 교실 환경 속 규칙 지키기, 학부모 트러블, 아동의 마음 공감, 혹은 혁신적 수업 도구 사용 등에 대한 질문이나 고민을 물어보았을 때, 멘티의 [${dominantType}]의 성향이 가진 눈부신 가치를 보장해 주면서도, 그 유형이 가질 수 있는 아쉬운 지점(예: 규칙 약화, 유연성 부족 등)을 보완하는 현실적이고도 친밀하며 구체적인 '행동 실천 가이드'를 2-3문장 이내로 명확하게 일깨워 주셔야 합니다.`;
-
-            const payload = {
-                contents: chatContextHistory.slice(-6), // 최근 6개 이력 맥락 보존
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                }
-            };
-
-            try {
-                const data = await callGeminiAPI(payload, userKey);
-                const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                chatBox.removeChild(aiLoadingBubble);
-
-                if (replyText) {
-                    const aiBubble = document.createElement("div");
-                    aiBubble.className = "self-start bg-slate-200 text-slate-800 max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tl-none font-medium leading-relaxed shadow-sm animate-fade-in";
-                    aiBubble.textContent = replyText.trim();
-                    chatBox.appendChild(aiBubble);
-
-                    // 챗봇 내부 기록 유지
-                    chatContextHistory.push({ role: "model", parts: [{ text: replyText }] });
-                } else {
-                    throw new Error("답변 수집 실패");
-                }
-            } catch (err) {
-                console.error("채팅 에러:", err);
-                chatBox.removeChild(aiLoadingBubble);
-                const errorBubble = document.createElement("div");
-                errorBubble.className = "self-start bg-rose-50 text-rose-600 max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tl-none font-bold";
-                errorBubble.textContent = "⚠️ 수석교사와 통신망 혼선이 생겼습니다. API Key를 확인하신 후 다시 보내주세요!";
-                chatBox.appendChild(errorBubble);
-            }
-
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
         // 화면 간 부드러운 전환 함수
         function switchScreen(fromId, toId) {
             document.getElementById(fromId).classList.add("hidden");
@@ -1129,6 +928,13 @@
             document.getElementById("user-display-name").textContent = userName;
             document.getElementById("header-user").classList.remove("hidden");
 
+            // 등록된 API Key가 있다면 불러와서 채우기
+            const savedKey = localStorage.getItem("gemini_api_key_saved");
+            if (savedKey) {
+                document.getElementById("gemini-key-input").value = savedKey;
+            }
+            toggleAiModeStatus();
+
             switchScreen("screen-start", "screen-quiz");
             showQuestion(0);
         }
@@ -1150,7 +956,7 @@
             const container = document.getElementById("quiz-choices-container");
             container.innerHTML = "";
 
-            // 선택지 랜덤 정렬 적용 (순서 맹점 방지)
+            // 선택지 랜덤 정렬 적용
             const randomizedChoices = [...q.choices].map((c, i) => ({ ...c, originIdx: i }));
             for (let i = randomizedChoices.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -1189,7 +995,6 @@
                 finishSimulation();
             }
         }
-
 
         // 시뮬레이션 완료 시 분석 연출 및 저장
         function finishSimulation() {
@@ -1285,7 +1090,7 @@
             });
 
             // 줌 채팅 공유용 템플릿 생성
-            const summaryString = `📢 [나는 어떤 교사가 될까?] 예비교사 멘토링 결과 공유 🌸
+            const summaryString = `📢 [나는 어떤 교사가 될까?] 예비교사 결과 공유 🌸
 - 이름: ${userName} 예비교사님
 - 진단 유형: ${activeResult.name} (${activeResult.oneLine})
 - 나의 강점: ${activeResult.strengths}
@@ -1293,17 +1098,20 @@
 - 보완 전문성: ${activeResult.competencies}
 
 💡 나의 성장 약속: "${activeResult.commitment}"
-💡 멘토링 소그룹 포부: "저는 타고난 [${activeResult.name}]의 밝은 강점을 가꾸고, 조심할 점인 [${activeResult.caveats}]에 귀 기울여 공감과 안전한 기준을 조화롭게 일구는 준비된 스승이 되겠습니다! 🌿"`;
+💡 소그룹 포부: "저는 타고난 [${activeResult.name}]의 밝은 강점을 가꾸고, 조심할 점인 [${activeResult.caveats}]에 귀 기울여 공감과 안전한 기준을 조화롭게 일구는 준비된 스승이 되겠습니다! 🌿"`;
 
             document.getElementById("zoom-summary-textarea").value = summaryString;
 
-            // 챗봇 대화 리셋
-            document.getElementById("ai-chat-box").innerHTML = `
-                <div class="self-start bg-slate-200 text-slate-800 max-w-[85%] rounded-2xl px-3.5 py-2.5 rounded-tl-none font-medium leading-relaxed">
-                    안녕하세요! <strong>${userName}</strong> 선생님. 분석 결과를 보니 따뜻한 <strong>${activeResult.name}</strong>의 자질을 깊게 지니고 계시네요! 현장 수업, 교사 마음가짐, 혹은 갈등 상황에 대해 무엇이든 저에게 마음 놓고 질문해 보세요. 👩‍🏫🌿
+            // AI 챗봇 최초 메시지 동적 적용
+            const chatBox = document.getElementById("ai-chat-box");
+            chatBox.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                    <div class="bg-rose-50 text-slate-700 p-2.5 rounded-xl max-w-[85%] leading-relaxed font-medium">
+                        반가워요! **${userName}** 예비교사님, 이번 진단에서 당신은 **[${activeResult.name}]** 유형으로 빛나고 계시네요. 30년 경력의 선배 교사로서 질문에 언제든 답변해 드릴게요. 궁금한 고민을 질문창에 입력해 보세요. 🌸
+                    </div>
                 </div>
             `;
-            chatContextHistory = [];
 
             return {
                 name: userName,
@@ -1314,6 +1122,211 @@
                 commitment: activeResult.commitment,
                 status: "제출완료"
             };
+        }
+
+
+        // [AI & 하이브리드 상담소 엔진]
+        // API 상태 텍스트 변경
+        function toggleAiModeStatus() {
+            const keyInput = document.getElementById("gemini-key-input");
+            const statusLabel = document.getElementById("ai-mode-status");
+            if (keyInput && keyInput.value.trim() !== "") {
+                statusLabel.textContent = "AI 라이브 모드 ⚡";
+                statusLabel.className = "text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2.5 py-0.5 rounded-full border border-emerald-100";
+            } else {
+                statusLabel.textContent = "자율 멘토 모드";
+                statusLabel.className = "text-[10px] bg-rose-50 text-rose-500 font-bold px-2.5 py-0.5 rounded-full border border-rose-100";
+            }
+        }
+
+        // API Key 저장 및 안전 갱신
+        function saveApiKey() {
+            const key = document.getElementById("gemini-key-input").value.trim();
+            if (!key) {
+                showToast("⚠️ 입력 오류", "유효한 API 키를 적어주세요.");
+                return;
+            }
+            localStorage.setItem("gemini_api_key_saved", key);
+            toggleAiModeStatus();
+            showToast("🗝️ 등록 성공", "Gemini API 키가 안전하게 로컬 저장소에 적용되었습니다.");
+        }
+
+        // 추천 키워드 클릭 시 텍스트 전송
+        function clickRecommendTag(text) {
+            const inputEl = document.getElementById("ai-chat-input");
+            inputEl.value = text;
+            sendChatMessage();
+        }
+
+        // 실시간 대화 전송 코어 처리기
+        async function sendChatMessage() {
+            const apiKey = document.getElementById("gemini-key-input").value.trim();
+            const inputEl = document.getElementById("ai-chat-input");
+            const userMsg = inputEl.value.trim();
+            if (!userMsg) return;
+
+            // 사용자 메시지 채팅화면 그리기
+            const chatBox = document.getElementById("ai-chat-box");
+            const userBubble = document.createElement("div");
+            userBubble.className = "flex justify-end";
+            userBubble.innerHTML = `
+                <div class="bg-rose-500 text-white p-2.5 rounded-xl max-w-[85%] leading-relaxed font-medium text-right">
+                    ${userMsg}
+                </div>
+            `;
+            chatBox.appendChild(userBubble);
+            inputEl.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 로딩 말풍선 생성
+            const loaderBubble = document.createElement("div");
+            loaderBubble.id = "ai-chat-loader";
+            loaderBubble.className = "flex items-start space-x-2";
+            loaderBubble.innerHTML = `
+                <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                <div class="bg-slate-100 text-slate-400 p-2.5 rounded-xl max-w-[85%] font-medium flex items-center space-x-1.5">
+                    <span class="animate-pulse">답변을 생각하고 있어요</span>
+                    <span class="flex space-x-0.5">
+                        <span class="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style="animation-delay: 0ms;"></span>
+                        <span class="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style="animation-delay: 150ms;"></span>
+                        <span class="w-1.5 h-1.5 bg-rose-400 rounded-full animate-bounce" style="animation-delay: 300ms;"></span>
+                    </span>
+                </div>
+            `;
+            chatBox.appendChild(loaderBubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 1. API가 비어 있을 경우: [자율 멘토 모드] 오프라인 시나리오 가동
+            if (!apiKey) {
+                setTimeout(() => {
+                    const loader = document.getElementById("ai-chat-loader");
+                    if (loader) loader.remove();
+
+                    // 나의 현재 성향 타입 획득
+                    const mentees = localDB.getMentees();
+                    const lastResultType = mentees.length > 0 ? mentees[mentees.length - 1].type : "관계중심형";
+
+                    const fallbackReply = generateFallbackMentorResponse(userMsg, lastResultType);
+                    const aiBubble = document.createElement("div");
+                    aiBubble.className = "flex items-start space-x-2";
+                    aiBubble.innerHTML = `
+                        <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                        <div class="bg-rose-50 text-slate-700 p-2.5 rounded-xl max-w-[85%] leading-relaxed font-medium">
+                            ${fallbackReply}
+                        </div>
+                    `;
+                    chatBox.appendChild(aiBubble);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1000);
+                return;
+            }
+
+            // 2. API가 있을 경우: [AI 라이브 모드] 실시간 Gemini API 통신
+            const mentees = localDB.getMentees();
+            const lastMentee = mentees[mentees.length - 1] || { name: userName, type: "관계중심형" };
+
+            const systemPrompt = `당신은 대한민국 교육대학교 학생들을 대상으로 30년 동안 현장에서 사랑과 존경을 받으며 잔뼈가 굵은 온화하고 지혜로운 수석교사 선배 멘토입니다.
+현재 대화 중인 예비교사의 이름은 [${userName}]이며, 시뮬레이션 진단 결과는 [${lastMentee.type}]형입니다.
+이 질문이 전달될 때 해당 예비교사의 대표 성향인 [${lastMentee.type}]형의 강점을 크게 격려하면서도, 그 유형이 가질 수 있는 현실적 약점을 지탱해줄 수 있는 구체적이고 바로 적용 가능한 초등/중등 교실 상황 통제와 소통 기법을 전해 주어야 합니다.
+따뜻하고 다정하게 조곤조근 설명해주는 교직 선배 어투(~란다, ~해요, ~합니다)로 텍스트를 구성해 주세요.`;
+
+            try {
+                const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: `${systemPrompt}\n\n예비교사 질문: "${userMsg}"` }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                const loader = document.getElementById("ai-chat-loader");
+                if (loader) loader.remove();
+
+                if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                    const replyText = data.candidates[0].content.parts[0].text;
+                    const aiBubble = document.createElement("div");
+                    aiBubble.className = "flex items-start space-x-2";
+                    aiBubble.innerHTML = `
+                        <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                        <div class="bg-rose-50 text-slate-700 p-2.5 rounded-xl max-w-[85%] leading-relaxed font-medium">
+                            ${replyText.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
+                    chatBox.appendChild(aiBubble);
+                } else {
+                    throw new Error("API 결과 파싱 에러");
+                }
+            } catch (err) {
+                const loader = document.getElementById("ai-chat-loader");
+                if (loader) loader.remove();
+
+                const errBubble = document.createElement("div");
+                errBubble.className = "flex items-start space-x-2";
+                errBubble.innerHTML = `
+                    <span class="bg-rose-100 text-rose-600 font-bold p-1 rounded-full text-[10px]">AI</span>
+                    <div class="bg-red-50 text-red-600 p-2.5 rounded-xl max-w-[85%] leading-relaxed font-semibold">
+                        ⚠️ 라이브 AI 연결 상태가 고르지 않습니다. (키 유효성 만료 또는 한도 초과). 일시적으로 자율 멘토 모드로 상담을 계속할 수 있습니다. (오류 원인: ${err.message})
+                    </div>
+                `;
+                chatBox.appendChild(errBubble);
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 오프라인 키워드 기반 동적 가상 선배 조언 생성기
+        function generateFallbackMentorResponse(msg, type) {
+            const mData = typeData[type] || typeData["관계중심형"];
+            const text = msg.toLowerCase();
+
+            // 1. 기강/규칙/떠드는 소란 키워드
+            if (text.includes("기강") || text.includes("규칙") || text.includes("떠들") || text.includes("소란") || text.includes("산만")) {
+                return `오, 교실의 기강과 규칙 세우기 때문에 고충을 느끼고 계시군요.<br><br>
+**[${type}]**을 가장 중요하게 보시는 선생님께서는 이 부분이 교실에서 가장 큰 마찰 지점이 되기 쉽답니다. 교실 기강의 핵심은 화를 내는 것이 아니라 **'온화하되 흔들리지 않는 명확함(Gentle but Firm)'**에 있단다.<br><br>
+아이들과 규칙을 미리 합의하고 그것을 어겼을 때의 조치를 한쪽 벽면에 시각화해두렴. 떠드는 친구가 생기면 말로 지적하기 전에 조용히 다가가 눈을 지그시 맞추거나, '선생님은 민우의 멋진 이야기를 규칙을 지키면서 듣고 싶단다' 하며 아이의 자존감을 보호해주면서 부드럽게 행동을 바로잡아주는 스킬을 연습하면 참 유용할 거야.`;
+            }
+
+            // 2. 학부모 소통 키워드
+            if (text.includes("학부모") || text.includes("민원") || text.includes("전화") || text.includes("항의") || text.includes("부모")) {
+                return `새내기 교사로서 가장 마음에 긴장감을 주는 대상이 바로 '학부모' 소통이지요.<br><br>
+기억해 두렴. 학부모와의 소통은 이기기 위한 '대결'이 아니라 **'아이의 바른 성장을 위해 같은 배를 탄 동반자(Partnership)'**라는 공감대를 다지는 과정이래야 수월해진단다.<br><br>
+민원 전화를 받을 때는 감정적으로 맞대응하지 말고 '어머님, 지훈이를 지켜보며 많이 속상하고 심려가 깊으셨겠어요. 저도 지훈이를 참 아낀답니다' 하고 우선 공감의 안부를 따뜻하게 건네려무나. 그 후에는 감정이 아닌 '구체적인 학교 일지 기록'에 기반해 담담하고 공평하게 사실을 전달하면, 거칠던 마음도 신뢰로 돌아설 거야. 선생님의 그 예쁜 ${mData.strengths} 자질을 소통에 꼭 얹어보렴.`;
+            }
+
+            // 3. 소외/왕따/친구 관계 키워드
+            if (text.includes("소외") || text.includes("왕따") || text.includes("친구") || text.includes("갈등") || text.includes("싸움")) {
+                return `교실 속에 은근히 겉돌고 고독해 보이는 아이가 눈에 밟히면 가슴이 많이 쓰리지요. 참 여린 따뜻한 심성을 가진 분이군요.<br><br>
+학급 내 소외 문제는 단순히 '야, 너 쟤랑 같이 놀아' 하고 강요한다고 해결되지 않는단다. 오히려 그 친구의 자존감을 올려주는 **'교실 속 비밀 임무 기획'**이 정답이 될 수 있어.<br><br>
+그 친구가 가진 소소한 장점이나 취미(식물 기르기, 미디어 다루기, 그림 등)를 귀하게 포착하여 학급 부서의 주요 장으로 교사가 먼저 공인하고 격찬해주렴. 초등/중등 가릴 것 없이 '담임 선생님의 시선의 온도'가 곧 '친구들이 그 아이를 보는 대우의 온도'를 결정하게 마련이란다.`;
+            }
+
+            // 4. 첫날/첫수업/시작 오티 키워드
+            if (text.includes("첫날") || text.includes("첫수업") || text.includes("시작") || text.includes("오티") || text.includes("개학")) {
+                return `대망의 첫날! 칠판에 이름을 적고 아이들의 수십 쌍의 호기심 어린 눈망울과 마주하는 찬란한 첫 등교일이군요.<br><br>
+첫 만남에서 가장 신경 써야 할 것은 거창한 교과서 진도가 아니라 **'우리 교실은 나를 온전히 포용하고 안전하게 지켜주는 약속의 둥지이구나'** 하는 안도감을 주는 일이란다.<br><br>
+선생님 자신의 교육관이 담긴 가벼운 그림 일러스트 소개를 곁들이고, 아이들 각자의 이름표를 예쁘게 나누어 주며 이름을 하나씩 진정성 있게 부르고 다정한 눈을 맞추어 주려무나. 배움의 가장 아름다운 질서는 완벽한 통제보다, 따뜻하게 안전한 '연결감'에서 싹트는 법이란다.`;
+            }
+
+            // 5. 무기력/공부/포기/성적 키워드
+            if (text.includes("무기력") || text.includes("포기") || text.includes("공부") || text.includes("성적") || text.includes("시험")) {
+                return `교탁 앞에 엎드려 '어차피 해봤자 안 돼요' 하며 배움을 포기한 무기력한 친구를 만났을 때, 스승의 가슴은 가장 막막해지지요.<br><br>
+기억하렴. 무기력은 게으름의 표출이 아니라 **'계속된 실패 속에서 나 자신을 방어하기 위한 두려움의 갑옷'**이기도 하단다.<br><br>
+그 아이에게는 거대한 학업 성취가 필요한 것이 아니야. '어? 하니까 되네?' 라는 아주 작고 사소한 **성취감의 조각(Micro-Success)**을 매일 조금씩 배달해주어야 해. 교과서 딱 한 줄 소리 내어 읽기, 칠판 털기 돕기 같은 100% 성공할 수밖에 없는 가벼운 과제를 주고 엄청난 격려로 보상해주렴. 점차 갑옷을 벗고 눈이 반짝이는 도약을 맞이하게 될 거야.`;
+            }
+
+            // 6. 매칭 키워드가 없을 때: 성향 맞춤형 에센스 선배의 다짐 서한 송출
+            return `질문해 주셔서 고마워요. **${userName}** 선생님이 주신 말씀 속에서 좋은 교사가 되고자 고민하는 성실함과 깊은 고뇌가 느껴져 뭉클해집니다.<br><br>
+선생님이 가지신 **[${type}]** DNA는 교실을 아름답게 바꿀 위대한 씨앗이랍니다. 앞으로 더 흔들리고 방황하며 성장해 나갈 테지만, 선생님이 선택한 **"${mData.commitment}"** 이 한 구절의 다짐 약속을 언제든 가슴 속 등대처럼 기억하신다면 틀림없이 참 따뜻하고 멋진 진짜 선생님이 되어 아이들의 앞날을 찬란히 비추게 될 겁니다. 든든히 지지할게요. 화이팅! 🌱`;
+        }
+
+        // 엔터키 처리
+        function handleChatEnter(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
         }
 
 
@@ -1562,7 +1575,7 @@
             // 즉각적인 대시보드 새로고침
             const currentMentees = localDB.getMentees();
             updateAdminDashboardUI(currentMentees);
-            showToast("🗑️ 삭제 완료", `${name} 선생님의 진단 데이터가 완전하게 제거되었습니다.`);
+            showToast("🗑️ 삭제 완료", `${name} 선생님의 진단 데이터가 완전히 제거되었습니다.`);
         }
 
 
@@ -1579,7 +1592,7 @@
             closeClearConfirmModal();
             localDB.clearAll();
             updateAdminDashboardUI([]);
-            showToast("🧹 초기화 완결", "로컬 데이터베이스의 모든 참여자 데이터가 삭제되었습니다.");
+            showToast("🧹 초기화 완결", "로컬 저장소의 모든 참여자 데이터가 삭제되었습니다.");
         }
 
 
@@ -1642,44 +1655,26 @@
                 }
             ];
 
-            // 6명 데이터를 즉시 병렬 등록 후 UI 갱신
+            // 6명 데이터 동적 적재
             mocks.forEach(item => {
                 localDB.saveMentee(item);
             });
 
             const current = localDB.getMentees();
             updateAdminDashboardUI(current);
-            showToast("🧪 데이터 로드 완료", "6인의 가상 멘티 결과가 로컬 저장소에 완벽하게 적재되었습니다.");
+            showToast("🧪 데이터 로드 완료", "6인의 가상 멘티 결과가 로컬 저장소에 완벽하게 탑재되었습니다.");
         }
 
-        // 이중 안전 장치 하이브리드 클립보드 복사 시스템
+        // 이중 백업 수동/자동 클립보드 복사 기획
         function copyZoomSummary() {
             const textarea = document.getElementById("zoom-summary-textarea");
             textarea.select();
             textarea.setSelectionRange(0, 99999);
 
-            let copiedSuccess = false;
-
-            // 1단계: 최신 navigator.clipboard 시도
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(textarea.value)
-                    .then(() => {
-                        showToast("📋 요약본 복사 완료!", "줌(Zoom) 채팅창에 가셔서 [붙여넣기](Ctrl+V) 하면 동료들과 성찰을 바로 나눌 수 있습니다! 🌱");
-                    })
-                    .catch(err => {
-                        fallbackCopy(textarea);
-                    });
-            } else {
-                fallbackCopy(textarea);
-            }
-        }
-
-        // 2단계: 모바일/Iframe 환경 대응 고전 복사법 백업
-        function fallbackCopy(elem) {
             try {
                 const ok = document.execCommand('copy');
                 if(ok) {
-                    showToast("📋 요약본 복사 완료!", "클립보드에 결과 요약 정보가 이중 백업 복사되었습니다. 줌 채팅창에 붙여넣기 해주세요!");
+                    showToast("📋 요약본 복사 완료!", "줌(Zoom) 채팅창에 가셔서 [Ctrl+V](붙여넣기) 하면 동료들과 성찰을 바로 나눌 수 있습니다! 🌱");
                 } else {
                     showToast("❌ 복사 실패", "텍스트 상자 내의 글을 직접 드래그하여 수동 복사해 주세요.");
                 }
@@ -1696,12 +1691,6 @@
             document.getElementById("memo-q1").value = "";
             document.getElementById("memo-q2").value = "";
             document.getElementById("memo-q3").value = "";
-
-            // AI 관련 출력 패널 숨기기 및 리셋
-            document.getElementById("ai-report-container").classList.remove("hidden");
-            document.getElementById("ai-report-loader").classList.add("hidden");
-            document.getElementById("ai-report-output").classList.add("hidden");
-            document.getElementById("ai-report-output").textContent = "";
 
             switchScreen("screen-result", "screen-start");
             document.getElementById("username").focus();
